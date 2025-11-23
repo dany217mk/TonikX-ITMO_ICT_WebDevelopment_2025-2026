@@ -37,6 +37,7 @@ class MyHTTPServer:
             grade = params.get('grade', [''])[0]
 
             if subject and grade:
+                # если subject нет в словаре - создаем его со значением [] и затем добавляем grade
                 self.data.setdefault(subject, []).append(grade)
 
             self.send_response(client_socket, "HTTP/1.1 303 See Other\r\nLocation: /\r\n\r\n")

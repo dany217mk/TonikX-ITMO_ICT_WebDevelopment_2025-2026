@@ -11,7 +11,8 @@ class CarOwner(models.Model):
     cars = models.ManyToManyField(
         'Car',
         through='Ownership',
-        through_fields=('id_owner', 'id_car')
+        through_fields=('id_owner', 'id_car'),
+        related_name='owners'
     )
 
     def __str__(self):
@@ -26,7 +27,7 @@ class DriverLicense(models.Model):
         ('D', 'Type D'),
     ]
     id_license = models.AutoField(primary_key=True)
-    id_owner = models.ForeignKey(CarOwner, on_delete=models.CASCADE)
+    id_owner = models.ForeignKey(CarOwner, on_delete=models.CASCADE, related_name='licences')
     license_number = models.CharField(max_length=10)
     license_type = models.CharField(max_length=10, choices=LICENSE_TYPES)
     issue_date = models.DateField()
@@ -46,8 +47,8 @@ class Car(models.Model):
 
 
 class Ownership(models.Model):
-    id_owner = models.ForeignKey(CarOwner, on_delete=models.CASCADE)
-    id_car = models.ForeignKey(Car, on_delete=models.CASCADE)
+    id_owner = models.ForeignKey(CarOwner, on_delete=models.CASCADE, related_name='ownerships')
+    id_car = models.ForeignKey(Car, on_delete=models.CASCADE, related_name='car_ownerships')
     start_date = models.DateField()
     end_date = models.DateField(null=True, blank=True)
 
